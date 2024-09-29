@@ -1,6 +1,10 @@
 package com.example.coach.model;
 
-public class Profile
+import com.example.coach.utils.Serializer;
+
+import java.io.Serializable;
+
+public class Profile implements Serializable
 {
     private int weight;
     private int age;
