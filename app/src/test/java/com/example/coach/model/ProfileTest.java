@@ -2,11 +2,13 @@ package com.example.coach.model;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
+
 import org.junit.Test;
 
 public class ProfileTest
 {
-    private Profile profile = new Profile(67, 35, 165, 0);
+    private Profile profile = new Profile(new Date(), 67, 35, 165, 0);
     private float img = (float)32.2;
     String message = "Surcharge.";
     @Test public void testGetImg()

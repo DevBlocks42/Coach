@@ -3,9 +3,11 @@ package com.example.coach.model;
 import com.example.coach.utils.Serializer;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Profile implements Serializable
 {
+    private Date date;
     private int weight;
     private int age;
     private int height;
@@ -17,14 +19,18 @@ public class Profile implements Serializable
     private static final int MIN_HOMME = 10;
     private static final int MAX_HOMME = 25;
 
-    public Profile(int weight, int age, int height, int sex)
+    public Profile(Date date, int weight, int age, int height, int sex)
     {
+        this.date = date;
         this.weight = weight;
         this.height = height;
         this.age = age;
         this.sex = sex;
     }
-
+    public String getDateAsString()
+    {
+        return date.toString();
+    }
     public int getWeight() {
         return weight;
     }

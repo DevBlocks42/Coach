@@ -2,14 +2,18 @@ package com.example.coach.controller;
 
 import android.content.Context;
 
+import com.example.coach.model.LocalAccess;
 import com.example.coach.model.Profile;
 import com.example.coach.utils.Serializer;
+
+import java.util.Date;
 
 public final class Control
 {
     private static Control instance = null;
     private static Profile profile;
     private static String fileName = "saveprofile";
+    private static LocalAccess localAccess;
     private Control()
     {
         super();
@@ -20,7 +24,9 @@ public final class Control
         {
             Control.instance = new Control();
         }
-        getSerialized(context);
+        //getSerialized(context);
+        localAccess = LocalAccess.getInstance(context);
+        Control.profile = localAccess.getLastProfile();
         return Control.instance;
     }
     private static void getSerialized(Context context)
@@ -29,8 +35,9 @@ public final class Control
     }
     public static void createProfile(int weight, int age, int height, int sex, Context context)
     {
-        Control.profile = new Profile(weight, age, height, sex);
-        Serializer.serialize(Control.fileName, Control.profile, context);
+        Control.profile = new Profile(new Date(), weight, age, height, sex);
+        localAccess.addProfile(Control.profile);
+        //Serializer.serialize(Control.fileName, Control.profile, context);
     }
     public static float getImg()
     {
