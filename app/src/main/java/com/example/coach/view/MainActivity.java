@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imgSmiley = (ImageView) findViewById(R.id.imgSmiley);
         button = (Button) findViewById(R.id.btnCalc);
         control = Control.getInstance(this);
-        getProfile();
+        //getProfile();
 
     }
 
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else
         {
-            Control.createProfile(weight, age, height, sex, this);
+            Control.createProfile(weight, age, height, sex);
             float img = Control.getImg();
             String message = Control.getMessage();
             switch(message)
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             lblImg.setText(message + " IMG : " + img);
         }
     }
-    private void getProfile()
+    public void getProfile()
     {
         if(Control.getHeight() != null)
         {

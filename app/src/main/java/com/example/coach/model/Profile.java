@@ -1,6 +1,10 @@
 package com.example.coach.model;
 
 import com.example.coach.utils.Serializer;
+import com.example.coach.utils.Tools;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -94,5 +98,19 @@ public class Profile implements Serializable
             }
         }
         return message;
+    }
+    public JSONObject convertToJSONObject()
+    {
+        JSONObject obj = new JSONObject();
+        try
+        {
+            obj.put("datemesure", Tools.getDateAsString(this.date));
+            obj.put("poids", this.getWeight());
+            obj.put("taille", this.getHeight());
+            obj.put("age", this.getAge());
+            obj.put("sexe", this.getSex());
+        }
+        catch(JSONException e) {}
+        return obj;
     }
 }

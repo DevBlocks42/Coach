@@ -2,9 +2,12 @@ package com.example.coach.controller;
 
 import android.content.Context;
 
-import com.example.coach.model.LocalAccess;
+import com.example.coach.view.MainActivity;
 import com.example.coach.model.Profile;
+import com.example.coach.model.RemoteAccess;
 import com.example.coach.utils.Serializer;
+
+import org.json.JSONObject;
 
 import java.util.Date;
 
@@ -13,31 +16,41 @@ public final class Control
     private static Control instance = null;
     private static Profile profile;
     private static String fileName = "saveprofile";
-    private static LocalAccess localAccess;
-    private Control()
+    private static RemoteAccess remoteAccess;
+    private static Context context;
+    //private static LocalAccess localAccess;
+    private Control(Context context)
     {
-        super();
+        if(context != null)
+        {
+            Control.context = context;
+        }
     }
     public static Control getInstance(Context context)
     {
-        if(Control.instance == null)
+        if(instance == null)
         {
-            Control.instance = new Control();
+            instance = new Control(context);
+            remoteAccess = RemoteAccess.getInstance();
+            remoteAccess.send("dernier", new JSONObject());
         }
-        //getSerialized(context);
-        localAccess = LocalAccess.getInstance(context);
-        Control.profile = localAccess.getLastProfile();
-        return Control.instance;
+        return instance;
     }
     private static void getSerialized(Context context)
     {
         Control.profile = (Profile) Serializer.deSerialize(Control.fileName, context);
     }
-    public static void createProfile(int weight, int age, int height, int sex, Context context)
+    public static void createProfile(int weight, int age, int height, int sex)
     {
         Control.profile = new Profile(new Date(), weight, age, height, sex);
-        localAccess.addProfile(Control.profile);
+        remoteAccess.send("enreg", Control.profile.convertToJSONObject());
+        //localAccess.addProfile(Control.profile);
         //Serializer.serialize(Control.fileName, Control.profile, context);
+    }
+    public void setProfile(Profile profile)
+    {
+        Control.profile = profile;
+        ((MainActivity)context).getProfile();
     }
     public static float getImg()
     {
