@@ -33,7 +33,7 @@ public class Profile implements Serializable
     }
     public String getDateAsString()
     {
-        return date.toString();
+        return Tools.getDateAsString(date);
     }
     public int getWeight() {
         return weight;

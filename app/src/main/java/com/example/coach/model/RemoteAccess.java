@@ -5,10 +5,13 @@ import android.util.Log;
 import com.example.coach.controller.Control;
 import com.example.coach.utils.AccesHTTP;
 import com.example.coach.utils.AsyncResponse;
+import com.example.coach.utils.Tools;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class RemoteAccess implements AsyncResponse
@@ -46,17 +49,22 @@ public class RemoteAccess implements AsyncResponse
             }
             else
             {
-                if(message.equals("dernier"))
+                if(message.equals("tous"))
                 {
-                    JSONObject infos = new JSONObject(result);
-                    //Date date = Tools.getStringAsDate(infos.getString("datemesure"));
-                    Integer weight = infos.getInt("poids");
-                    Integer height = infos.getInt("taille");
-                    Integer age = infos.getInt("age");
-                    Integer sex = infos.getInt("sexe");
-                    Profile p = new Profile(new Date(), weight, age, height, sex);
-                    Log.d("PROFILE", "PROFILE : " + weight);
-                    control.setProfile(p);
+                    ArrayList<Profile> profiles = new ArrayList<Profile>();
+                    JSONArray objects = new JSONArray(result);
+                    for(int i = 0; i < objects.length(); i++)
+                    {
+                        JSONObject currentObj = new JSONObject(objects.get(i).toString());
+                        String date = currentObj.getString("datemesure");
+                        Integer weight = currentObj.getInt("poids");
+                        Integer height = currentObj.getInt("taille");
+                        Integer age = currentObj.getInt("age");
+                        Integer sex = currentObj.getInt("sexe");
+                        Profile profile = new Profile(Tools.getStringAsDate(date), weight, age, height, sex);
+                        profiles.add(profile);
+                    }
+                    control.setProfiles(profiles);
                 }
             }
         }

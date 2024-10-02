@@ -1,30 +1,27 @@
 package com.example.coach.controller;
 
 import android.content.Context;
+import android.util.Log;
 
-import com.example.coach.view.MainActivity;
+import com.example.coach.view.CalculActivity;
 import com.example.coach.model.Profile;
 import com.example.coach.model.RemoteAccess;
 import com.example.coach.utils.Serializer;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public final class Control
 {
     private static Control instance = null;
-    private static Profile profile;
-    private static String fileName = "saveprofile";
     private static RemoteAccess remoteAccess;
-    private static Context context;
-    //private static LocalAccess localAccess;
+    public ArrayList<Profile> profiles;
+
     private Control(Context context)
     {
-        if(context != null)
-        {
-            Control.context = context;
-        }
+        super();
     }
     public static Control getInstance(Context context)
     {
@@ -32,72 +29,50 @@ public final class Control
         {
             instance = new Control(context);
             remoteAccess = RemoteAccess.getInstance();
-            remoteAccess.send("dernier", new JSONObject());
+            remoteAccess.send("tous", new JSONObject());
         }
         return instance;
     }
-    private static void getSerialized(Context context)
+    public void createProfile(int weight, int age, int height, int sex)
     {
-        Control.profile = (Profile) Serializer.deSerialize(Control.fileName, context);
+        Profile profile = new Profile(new Date(), weight, age, height, sex);
+        profiles.add(profile);
+        remoteAccess.send("enreg", profile.convertToJSONObject());
     }
-    public static void createProfile(int weight, int age, int height, int sex)
+    public float getImg()
     {
-        Control.profile = new Profile(new Date(), weight, age, height, sex);
-        remoteAccess.send("enreg", Control.profile.convertToJSONObject());
-        //localAccess.addProfile(Control.profile);
-        //Serializer.serialize(Control.fileName, Control.profile, context);
-    }
-    public void setProfile(Profile profile)
-    {
-        Control.profile = profile;
-        ((MainActivity)context).getProfile();
-    }
-    public static float getImg()
-    {
-        if(Control.profile == null)
+        if(profiles.size() > 0)
         {
-            return (float)0;
+            return profiles.get(profiles.size() - 1).getImg();
         }
-        return Control.profile.getImg();
+        else
+        {
+            return (float) 0;
+        }
     }
-    public static String getMessage()
+    public String getMessage()
     {
-        if(Control.profile == null)
+        if(profiles.size() > 0)
+        {
+            return profiles.get(profiles.size() - 1).getMessage();
+        }
+        else
         {
             return "";
         }
-        return Control.profile.getMessage();
     }
-    public static Integer getWeight()
+    public ArrayList<Profile> getProfiles()
     {
-        if(Control.profile == null)
-        {
-            return null;
-        }
-        return (Integer) Control.profile.getWeight();
+        return profiles;
     }
-    public static Integer getHeight()
+    public void setProfiles(ArrayList<Profile> profiles)
     {
-        if(Control.profile == null)
-        {
-            return null;
-        }
-        return Control.profile.getHeight();
+        this.profiles = profiles;
     }
-    public static Integer getAge()
+    public void delProfil(Profile profile)
     {
-        if(Control.profile == null)
-        {
-            return null;
-        }
-        return Control.profile.getAge();
-    }
-    public static Integer getSex()
-    {
-        if(Control.profile == null)
-        {
-            return null;
-        }
-        return Control.profile.getSex();
+        remoteAccess.send("suppr", profile.convertToJSONObject());
+        Log.d("profil", "************** profil json = "+profile.convertToJSONObject());
+        profiles.remove(profile);
     }
 }
