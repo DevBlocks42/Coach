@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.util.Date;
 
 public class Profile implements Serializable
@@ -30,6 +31,14 @@ public class Profile implements Serializable
         this.height = height;
         this.age = age;
         this.sex = sex;
+    }
+    public Date getDate()
+    {
+        return this.date;
+    }
+    public String getDateFormated()
+    {
+        return String.valueOf(this.date);
     }
     public String getDateAsString()
     {

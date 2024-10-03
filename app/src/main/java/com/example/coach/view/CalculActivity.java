@@ -51,7 +51,7 @@ public class CalculActivity extends AppCompatActivity implements View.OnClickLis
         lblImg = (TextView) findViewById(R.id.lblIMG);
         imgSmiley = (ImageView) findViewById(R.id.imgSmiley);
         button = (Button) findViewById(R.id.btnCalc);
-        control = Control.getInstance(this);
+        control = Control.getInstance();
         //getProfile();
 
     }

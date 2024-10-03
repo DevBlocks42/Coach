@@ -1,6 +1,7 @@
 package com.example.coach.view;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coach.R;
 import com.example.coach.model.Profile;
+import com.example.coach.utils.Tools;
 
 import java.util.ArrayList;
 
@@ -38,8 +40,9 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
     @Override
     public void onBindViewHolder(@NonNull HistoryListAdapter.ViewHolder holder, int position)
     {
-        holder.txtListDate.setText("" + position);
-        holder.txtListIMG.setText("" + profiles.get(position).getImg());
+        Log.d("DATE", String.valueOf(profiles.get(position).getDate()));
+        holder.txtListDate.setText(Tools.getDateAsString(profiles.get(position).getDate()));
+        holder.txtListIMG.setText(String.valueOf(profiles.get(position).getImg()));
     }
 
     @Override

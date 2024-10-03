@@ -19,15 +19,15 @@ public final class Control
     private static RemoteAccess remoteAccess;
     public ArrayList<Profile> profiles;
 
-    private Control(Context context)
+    private Control()
     {
         super();
     }
-    public static Control getInstance(Context context)
+    public static Control getInstance()
     {
         if(instance == null)
         {
-            instance = new Control(context);
+            instance = new Control();
             remoteAccess = RemoteAccess.getInstance();
             remoteAccess.send("tous", new JSONObject());
         }

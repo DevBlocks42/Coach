@@ -22,7 +22,7 @@ public class RemoteAccess implements AsyncResponse
 
     private RemoteAccess()
     {
-        control = Control.getInstance(null);
+        control = Control.getInstance();
     }
     public static RemoteAccess getInstance()
     {
@@ -56,12 +56,12 @@ public class RemoteAccess implements AsyncResponse
                     for(int i = 0; i < objects.length(); i++)
                     {
                         JSONObject currentObj = new JSONObject(objects.get(i).toString());
-                        String date = currentObj.getString("datemesure");
+                        Date date = Tools.getStringAsDate(currentObj.getString("datemesure"));
                         Integer weight = currentObj.getInt("poids");
                         Integer height = currentObj.getInt("taille");
                         Integer age = currentObj.getInt("age");
                         Integer sex = currentObj.getInt("sexe");
-                        Profile profile = new Profile(Tools.getStringAsDate(date), weight, age, height, sex);
+                        Profile profile = new Profile(date, weight, age, height, sex);
                         profiles.add(profile);
                     }
                     control.setProfiles(profiles);

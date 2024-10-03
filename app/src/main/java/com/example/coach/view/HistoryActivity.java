@@ -15,6 +15,7 @@ import com.example.coach.controller.Control;
 import com.example.coach.model.Profile;
 
 import java.util.ArrayList;
+import android.util.Log;
 
 public class HistoryActivity extends AppCompatActivity
 {
@@ -31,7 +32,7 @@ public class HistoryActivity extends AppCompatActivity
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        control = Control.getInstance(this);
+        control = Control.getInstance();
         createList();
     }
     private void createList()
@@ -39,10 +40,11 @@ public class HistoryActivity extends AppCompatActivity
         ArrayList<Profile> profiles = control.getProfiles();
         if(profiles != null)
         {
+            Log.d("PROFILES", String.valueOf(profiles.size()));
             RecyclerView history = (RecyclerView) findViewById(R.id.lstHistory);
-            HistoryListAdapter adapter = new HistoryListAdapter(this, profiles);
+            HistoryListAdapter adapter = new HistoryListAdapter(HistoryActivity.this, profiles);
             history.setAdapter(adapter);
-            history.setLayoutManager(new LinearLayoutManager(this));
+            history.setLayoutManager(new LinearLayoutManager(HistoryActivity.this));
 
         }
     }
